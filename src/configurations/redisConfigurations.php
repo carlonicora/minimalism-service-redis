@@ -19,8 +19,8 @@ class redisConfigurations extends abstractServiceConfigurations {
      * @throws configurationException
      */
     public function __construct() {
-        if (!($redisConnection = getenv('PHLOW_REDIS_CONNECTION')) !== false) {
-            throw new configurationException('redis', 'PHLOW_REDIS_CONNECTION is a required configuration');
+        if (!($redisConnection = getenv('REDIS_CONNECTION')) !== false) {
+            throw new configurationException('redis', 'REDIS_CONNECTION is a required configuration');
         }
 
         [
