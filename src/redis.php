@@ -12,8 +12,8 @@ class redis extends abstractService {
     /** @var redisConfigurations  */
     private redisConfigurations $configData;
 
-    /** @var \Redis  */
-    private \Redis $redis;
+    /** @var \Redis|null  */
+    private ?\Redis $redis=null;
 
     /**
      * abstractApiCaller constructor.
