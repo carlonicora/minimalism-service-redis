@@ -79,4 +79,13 @@ class redis extends abstractService {
             $this->redis->setex($key, $ttl, $value);
         }
     }
+
+    /**
+     * @param string $key
+     * @throws redisConnectionException
+     */
+    public function remove(string $key) : void {
+        $this->connect();
+        $this->redis->del($key);
+    }
 }
