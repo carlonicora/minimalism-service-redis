@@ -88,4 +88,14 @@ class redis extends abstractService {
         $this->connect();
         $this->redis->del($key);
     }
+
+    /**
+     * @param string $keyPattern
+     * @return array
+     * @throws redisConnectionException
+     */
+    public function getKeys(string $keyPattern) : array {
+        $this->connect();
+        return $this->redis->keys($keyPattern);
+    }
 }
