@@ -1,5 +1,5 @@
 <?php
-namespace carlonicora\minimalism\services\redis\Exceptions;
+namespace CarloNicora\Minimalism\Services\Redis\Exceptions;
 
 use Exception;
 

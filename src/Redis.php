@@ -1,15 +1,15 @@
 <?php
-namespace carlonicora\minimalism\services\redis;
+namespace CarloNicora\Minimalism\Services\Redis;
 
-use carlonicora\minimalism\core\services\abstracts\abstractService;
-use carlonicora\minimalism\core\services\factories\servicesFactory;
-use carlonicora\minimalism\core\services\interfaces\serviceConfigurationsInterface;
-use carlonicora\minimalism\services\redis\Configurations\RedisConfigurations;
-use carlonicora\minimalism\services\redis\Exceptions\RedisConnectionException;
-use carlonicora\minimalism\services\redis\Exceptions\RedisKeyNotFoundException;
+use CarloNicora\Minimalism\Core\Services\Abstracts\AbstractService;
+use CarloNicora\Minimalism\Core\Services\Factories\ServicesFactory;
+use CarloNicora\Minimalism\Core\Services\Interfaces\ServiceConfigurationsInterface;
+use CarloNicora\Minimalism\Services\Redis\Configurations\RedisConfigurations;
+use CarloNicora\Minimalism\Services\Redis\Exceptions\RedisConnectionException;
+use CarloNicora\Minimalism\Services\Redis\Exceptions\RedisKeyNotFoundException;
 use Exception;
 
-class RRedis extends abstractService {
+class Redis extends AbstractService {
     /** @var RedisConfigurations  */
     private RedisConfigurations $configData;
 
@@ -18,10 +18,11 @@ class RRedis extends abstractService {
 
     /**
      * abstractApiCaller constructor.
-     * @param serviceConfigurationsInterface $configData
-     * @param servicesFactory $services
+     * @param ServiceConfigurationsInterface $configData
+     * @param ServicesFactory $services
      */
-    public function __construct(serviceConfigurationsInterface $configData, servicesFactory $services) {
+    public function __construct(ServiceConfigurationsInterface $configData, ServicesFactory $services)
+    {
         parent::__construct($configData, $services);
 
         /** @noinspection PhpFieldAssignmentTypeMismatchInspection */
@@ -32,7 +33,8 @@ class RRedis extends abstractService {
      *
      * @throws RedisConnectionException
      */
-    private function connect(): void {
+    private function connect(): void
+    {
         if ($this->redis === null) {
             $this->redis = new \Redis();
         }
@@ -57,7 +59,8 @@ class RRedis extends abstractService {
      * @throws RedisKeyNotFoundException
      * @throws RedisConnectionException
      */
-    public function get(string $key) : string {
+    public function get(string $key) : string
+    {
         $this->connect();
 
         $response = $this->redis->get($key);
@@ -75,7 +78,8 @@ class RRedis extends abstractService {
      * @param int|null $ttl
      * @throws RedisConnectionException
      */
-    public function set(string $key, string $value, int $ttl=null): void {
+    public function set(string $key, string $value, int $ttl=null): void
+    {
         $this->connect();
 
         if ($ttl === null) {
@@ -89,7 +93,8 @@ class RRedis extends abstractService {
      * @param string $key
      * @throws RedisConnectionException
      */
-    public function remove(string $key) : void {
+    public function remove(string $key) : void
+    {
         $this->connect();
         $this->redis->del($key);
     }
@@ -99,7 +104,8 @@ class RRedis extends abstractService {
      * @return array
      * @throws RedisConnectionException
      */
-    public function getKeys(string $keyPattern) : array {
+    public function getKeys(string $keyPattern) : array
+    {
         $this->connect();
         return $this->redis->keys($keyPattern);
     }

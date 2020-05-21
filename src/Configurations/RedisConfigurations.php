@@ -1,10 +1,10 @@
 <?php
-namespace carlonicora\minimalism\services\redis\Configurations;
+namespace CarloNicora\Minimalism\Services\Redis\Configurations;
 
-use carlonicora\minimalism\core\services\abstracts\abstractServiceConfigurations;
-use carlonicora\minimalism\core\services\exceptions\configurationException;
+use CarloNicora\Minimalism\Core\Services\Abstracts\AbstractServiceConfigurations;
+use CarloNicora\Minimalism\Core\Services\Exceptions\ConfigurationException;
 
-class RedisConfigurations extends abstractServiceConfigurations {
+class RedisConfigurations extends AbstractServiceConfigurations {
     /** @var string  */
     public string $host;
 
@@ -18,7 +18,8 @@ class RedisConfigurations extends abstractServiceConfigurations {
      * redisConfigurations constructor.
      * @throws configurationException
      */
-    public function __construct() {
+    public function __construct()
+    {
         if (!($redisConnection = getenv('MINIMALISM_SERVICE_REDIS_CONNECTION')) !== false) {
             throw new configurationException('redis', 'MINIMALISM_SERVICE_REDIS_CONNECTION is a required configuration');
         }
