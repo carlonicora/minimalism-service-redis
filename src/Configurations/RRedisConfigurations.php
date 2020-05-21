@@ -1,10 +1,10 @@
 <?php
-namespace carlonicora\minimalism\services\redis\CConfigurations;
+namespace carlonicora\minimalism\services\redis\Configurations;
 
 use carlonicora\minimalism\core\services\abstracts\abstractServiceConfigurations;
 use carlonicora\minimalism\core\services\exceptions\configurationException;
 
-class redisConfigurations extends abstractServiceConfigurations {
+class RRedisConfigurations extends abstractServiceConfigurations {
     /** @var string  */
     public string $host;
 
