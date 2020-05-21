@@ -4,9 +4,10 @@ namespace carlonicora\minimalism\services\redis;
 use carlonicora\minimalism\core\services\abstracts\abstractService;
 use carlonicora\minimalism\core\services\factories\servicesFactory;
 use carlonicora\minimalism\core\services\interfaces\serviceConfigurationsInterface;
-use carlonicora\minimalism\services\redis\configurations\redisConfigurations;
-use carlonicora\minimalism\services\redis\exceptions\redisConnectionException;
-use carlonicora\minimalism\services\redis\exceptions\redisKeyNotFoundException;
+use carlonicora\minimalism\services\redis\CConfigurations\redisConfigurations;
+use carlonicora\minimalism\services\redis\EExceptions\redisConnectionException;
+use carlonicora\minimalism\services\redis\EExceptions\redisKeyNotFoundException;
+use Exception;
 
 class redis extends abstractService {
     /** @var redisConfigurations  */
@@ -37,7 +38,11 @@ class redis extends abstractService {
         }
 
         if (!$this->redis->isConnected()) {
-            if (!$this->redis->connect($this->configData->host, $this->configData->port, 2)){
+            try {
+                if (!$this->redis->connect($this->configData->host, $this->configData->port, 2)) {
+                    throw new redisConnectionException('Unable to connect to redis');
+                }
+            } catch (Exception $e) {
                 throw new redisConnectionException('Unable to connect to redis');
             }
             if ($this->configData->password !== null) {

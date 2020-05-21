@@ -1,5 +1,5 @@
 <?php
-namespace carlonicora\minimalism\services\redis\configurations;
+namespace carlonicora\minimalism\services\redis\CConfigurations;
 
 use carlonicora\minimalism\core\services\abstracts\abstractServiceConfigurations;
 use carlonicora\minimalism\core\services\exceptions\configurationException;
