@@ -4,7 +4,7 @@ namespace carlonicora\minimalism\services\redis\Factories;
 use carlonicora\minimalism\core\services\abstracts\abstractServiceFactory;
 use carlonicora\minimalism\core\services\exceptions\configurationException;
 use carlonicora\minimalism\core\services\factories\servicesFactory;
-use carlonicora\minimalism\services\redis\Configurations\RRedisConfigurations;
+use carlonicora\minimalism\services\redis\Configurations\RedisConfigurations;
 use carlonicora\minimalism\services\redis\RRedis;
 
 class SServiceFactory extends abstractServiceFactory {
@@ -14,7 +14,7 @@ class SServiceFactory extends abstractServiceFactory {
      * @throws configurationException
      */
     public function __construct(servicesFactory $services) {
-        $this->configData = new RRedisConfigurations();
+        $this->configData = new RedisConfigurations();
 
         parent::__construct($services);
     }

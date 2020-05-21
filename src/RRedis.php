@@ -4,14 +4,14 @@ namespace carlonicora\minimalism\services\redis;
 use carlonicora\minimalism\core\services\abstracts\abstractService;
 use carlonicora\minimalism\core\services\factories\servicesFactory;
 use carlonicora\minimalism\core\services\interfaces\serviceConfigurationsInterface;
-use carlonicora\minimalism\services\redis\Configurations\RRedisConfigurations;
-use carlonicora\minimalism\services\redis\Exceptions\RRedisConnectionException;
-use carlonicora\minimalism\services\redis\Exceptions\RRedisKeyNotFoundException;
+use carlonicora\minimalism\services\redis\Configurations\RedisConfigurations;
+use carlonicora\minimalism\services\redis\Exceptions\RedisConnectionException;
+use carlonicora\minimalism\services\redis\Exceptions\RedisKeyNotFoundException;
 use Exception;
 
 class RRedis extends abstractService {
-    /** @var RRedisConfigurations  */
-    private RRedisConfigurations $configData;
+    /** @var RedisConfigurations  */
+    private RedisConfigurations $configData;
 
     /** @var \Redis|null  */
     private ?\Redis $redis=null;
@@ -30,7 +30,7 @@ class RRedis extends abstractService {
 
     /**
      *
-     * @throws RRedisConnectionException
+     * @throws RedisConnectionException
      */
     private function connect(): void {
         if ($this->redis === null) {
@@ -40,10 +40,10 @@ class RRedis extends abstractService {
         if (!$this->redis->isConnected()) {
             try {
                 if (!$this->redis->connect($this->configData->host, $this->configData->port, 2)) {
-                    throw new RRedisConnectionException('Unable to connect to redis');
+                    throw new RedisConnectionException('Unable to connect to redis');
                 }
             } catch (Exception $e) {
-                throw new RRedisConnectionException('Unable to connect to redis');
+                throw new RedisConnectionException('Unable to connect to redis');
             }
             if ($this->configData->password !== null) {
                 $this->redis->auth($this->configData->password);
@@ -54,8 +54,8 @@ class RRedis extends abstractService {
     /**
      * @param string $key
      * @return string
-     * @throws RRedisKeyNotFoundException
-     * @throws RRedisConnectionException
+     * @throws RedisKeyNotFoundException
+     * @throws RedisConnectionException
      */
     public function get(string $key) : string {
         $this->connect();
@@ -63,7 +63,7 @@ class RRedis extends abstractService {
         $response = $this->redis->get($key);
 
         if ($response === false) {
-            throw new RRedisKeyNotFoundException('Key not found');
+            throw new RedisKeyNotFoundException('Key not found');
         }
 
         return $response;
@@ -73,7 +73,7 @@ class RRedis extends abstractService {
      * @param string $key
      * @param string $value
      * @param int|null $ttl
-     * @throws RRedisConnectionException
+     * @throws RedisConnectionException
      */
     public function set(string $key, string $value, int $ttl=null): void {
         $this->connect();
@@ -87,7 +87,7 @@ class RRedis extends abstractService {
 
     /**
      * @param string $key
-     * @throws RRedisConnectionException
+     * @throws RedisConnectionException
      */
     public function remove(string $key) : void {
         $this->connect();
@@ -97,7 +97,7 @@ class RRedis extends abstractService {
     /**
      * @param string $keyPattern
      * @return array
-     * @throws RRedisConnectionException
+     * @throws RedisConnectionException
      */
     public function getKeys(string $keyPattern) : array {
         $this->connect();

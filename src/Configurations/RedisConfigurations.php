@@ -4,7 +4,7 @@ namespace carlonicora\minimalism\services\redis\Configurations;
 use carlonicora\minimalism\core\services\abstracts\abstractServiceConfigurations;
 use carlonicora\minimalism\core\services\exceptions\configurationException;
 
-class RRedisConfigurations extends abstractServiceConfigurations {
+class RedisConfigurations extends abstractServiceConfigurations {
     /** @var string  */
     public string $host;
 

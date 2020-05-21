@@ -3,6 +3,6 @@ namespace carlonicora\minimalism\services\redis\Exceptions;
 
 use Exception;
 
-class RRedisKeyNotFoundException extends Exception {
+class RedisKeyNotFoundException extends Exception {
 
 }
