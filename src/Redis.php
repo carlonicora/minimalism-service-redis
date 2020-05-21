@@ -30,25 +30,36 @@ class Redis extends AbstractService {
     }
 
     /**
-     *
+     * @return \Redis
      * @throws RedisConnectionException
      */
-    private function connect(): void
+    private function getRedis() : \Redis
     {
         if ($this->redis === null) {
             $this->redis = new \Redis();
         }
 
+        $this->connect();
+
+        return $this->redis;
+    }
+
+    /**
+     *
+     * @throws RedisConnectionException
+     */
+    private function connect(): void
+    {
         if (!$this->redis->isConnected()) {
             try {
-                if (!$this->redis->connect($this->configData->host, $this->configData->port, 2)) {
+                if (!$this->redis->connect($this->configData->getHost(), $this->configData->getPort(), 2)) {
                     throw new RedisConnectionException('Unable to connect to redis');
                 }
             } catch (Exception $e) {
                 throw new RedisConnectionException('Unable to connect to redis');
             }
-            if ($this->configData->password !== null) {
-                $this->redis->auth($this->configData->password);
+            if ($this->configData->getPassword() !== null) {
+                $this->redis->auth($this->configData->getPassword());
             }
         }
     }
@@ -56,14 +67,11 @@ class Redis extends AbstractService {
     /**
      * @param string $key
      * @return string
-     * @throws RedisKeyNotFoundException
-     * @throws RedisConnectionException
+     * @throws RedisKeyNotFoundException|RedisConnectionException
      */
     public function get(string $key) : string
     {
-        $this->connect();
-
-        $response = $this->redis->get($key);
+        $response = $this->getRedis()->get($key);
 
         if ($response === false) {
             throw new RedisKeyNotFoundException('Key not found');
@@ -80,12 +88,10 @@ class Redis extends AbstractService {
      */
     public function set(string $key, string $value, int $ttl=null): void
     {
-        $this->connect();
-
         if ($ttl === null) {
-            $this->redis->set($key, $value);
+            $this->getRedis()->set($key, $value);
         } else {
-            $this->redis->setex($key, $ttl, $value);
+            $this->getRedis()->setex($key, $ttl, $value);
         }
     }
 
@@ -95,8 +101,7 @@ class Redis extends AbstractService {
      */
     public function remove(string $key) : void
     {
-        $this->connect();
-        $this->redis->del($key);
+        $this->getRedis()->del($key);
     }
 
     /**
@@ -106,7 +111,6 @@ class Redis extends AbstractService {
      */
     public function getKeys(string $keyPattern) : array
     {
-        $this->connect();
-        return $this->redis->keys($keyPattern);
+        return $this->getRedis()->keys($keyPattern);
     }
 }

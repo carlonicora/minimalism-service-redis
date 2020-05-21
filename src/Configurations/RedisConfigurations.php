@@ -2,26 +2,27 @@
 namespace CarloNicora\Minimalism\Services\Redis\Configurations;
 
 use CarloNicora\Minimalism\Core\Services\Abstracts\AbstractServiceConfigurations;
-use CarloNicora\Minimalism\Core\Services\Exceptions\ConfigurationException;
+use CarloNicora\Minimalism\Services\Redis\Events\RedisErrorEvents;
+use Exception;
 
 class RedisConfigurations extends AbstractServiceConfigurations {
     /** @var string  */
-    public string $host;
+    private string $host;
 
     /** @var int  */
-    public int $port;
+    private int $port;
 
     /** @var string  */
-    public string $password;
+    private string $password;
 
     /**
      * redisConfigurations constructor.
-     * @throws configurationException
+     * @throws Exception
      */
     public function __construct()
     {
         if (!($redisConnection = getenv('MINIMALISM_SERVICE_REDIS_CONNECTION')) !== false) {
-            throw new configurationException('redis', 'MINIMALISM_SERVICE_REDIS_CONNECTION is a required configuration');
+            RedisErrorEvents::CONFIGURATION_ERROR()->throw();
         }
 
         [
@@ -29,5 +30,29 @@ class RedisConfigurations extends AbstractServiceConfigurations {
             $this->port,
             $this->password,
         ] = explode(',', $redisConnection);
+    }
+
+    /**
+     * @return string
+     */
+    public function getHost(): string
+    {
+        return $this->host;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPort(): int
+    {
+        return $this->port;
     }
 }
