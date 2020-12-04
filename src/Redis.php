@@ -41,6 +41,10 @@ class Redis extends AbstractService {
 
         $this->connect();
 
+        if (($dbIndex = $this->configData->getDbIndex()) !== null){
+            $this->redis->select($dbIndex);
+        }
+
         return $this->redis;
     }
 

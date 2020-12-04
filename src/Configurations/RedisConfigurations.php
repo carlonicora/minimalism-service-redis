@@ -15,6 +15,9 @@ class RedisConfigurations extends AbstractServiceConfigurations {
     /** @var string  */
     private string $password;
 
+    /** @var int|null  */
+    private ?int $dbIndex;
+
     /**
      * redisConfigurations constructor.
      * @throws Exception
@@ -29,6 +32,7 @@ class RedisConfigurations extends AbstractServiceConfigurations {
             $this->host,
             $this->port,
             $this->password,
+            $this->dbIndex
         ] = explode(',', $redisConnection);
     }
 
@@ -54,5 +58,13 @@ class RedisConfigurations extends AbstractServiceConfigurations {
     public function getPort(): int
     {
         return $this->port;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getDbIndex(): ?int
+    {
+        return $this->dbIndex;
     }
 }

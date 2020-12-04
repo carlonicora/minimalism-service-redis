@@ -71,7 +71,6 @@ class RedisTest extends AbstractTestCase
 
     /**
      * @throws RedisConnectionException
-     * @throws RedisKeyNotFoundException
      */
     public function testSetValue() : void
     {
