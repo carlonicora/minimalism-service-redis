@@ -100,10 +100,10 @@ class Redis extends AbstractService {
     }
 
     /**
-     * @param string $key
+     * @param int|string|array $key
      * @throws RedisConnectionException
      */
-    public function remove(string $key) : void
+    public function remove($key) : void
     {
         $this->getRedis()->del($key);
     }
