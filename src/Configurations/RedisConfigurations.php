@@ -33,7 +33,11 @@ class RedisConfigurations extends AbstractServiceConfigurations {
             $this->port,
             $this->password,
             $this->dbIndex
-        ] = explode(',', $redisConnection);
+        ] = array_pad(
+                explode(',', $redisConnection),
+                4,
+                null
+        );
     }
 
     /**
