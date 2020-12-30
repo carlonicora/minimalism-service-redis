@@ -1,32 +1,44 @@
 <?php
 namespace CarloNicora\Minimalism\Services\Redis;
 
-use CarloNicora\Minimalism\Core\Services\Abstracts\AbstractService;
-use CarloNicora\Minimalism\Core\Services\Factories\ServicesFactory;
-use CarloNicora\Minimalism\Core\Services\Interfaces\ServiceConfigurationsInterface;
-use CarloNicora\Minimalism\Services\Redis\Configurations\RedisConfigurations;
+use CarloNicora\Minimalism\Interfaces\ServiceInterface;
 use CarloNicora\Minimalism\Services\Redis\Exceptions\RedisConnectionException;
 use CarloNicora\Minimalism\Services\Redis\Exceptions\RedisKeyNotFoundException;
 use Exception;
 
-class Redis extends AbstractService {
-    /** @var RedisConfigurations  */
-    private RedisConfigurations $configData;
+class Redis implements ServiceInterface
+{
+    /** @var string  */
+    private string $host;
+
+    /** @var int  */
+    private int $port;
+
+    /** @var string  */
+    private string $password;
+
+    /** @var int|null  */
+    private ?int $dbIndex;
 
     /** @var \Redis|null  */
     private ?\Redis $redis=null;
 
     /**
      * abstractApiCaller constructor.
-     * @param ServiceConfigurationsInterface $configData
-     * @param ServicesFactory $services
+     * @param string $MINIMALISM_SERVICE_REDIS_CONNECTION
      */
-    public function __construct(ServiceConfigurationsInterface $configData, ServicesFactory $services)
+    public function __construct(string $MINIMALISM_SERVICE_REDIS_CONNECTION)
     {
-        parent::__construct($configData, $services);
-
-        /** @noinspection PhpFieldAssignmentTypeMismatchInspection */
-        $this->configData = $configData;
+        [
+            $this->host,
+            $this->port,
+            $this->password,
+            $this->dbIndex
+        ] = array_pad(
+            explode(',', $MINIMALISM_SERVICE_REDIS_CONNECTION),
+            4,
+            null
+        );
     }
 
     /**
@@ -41,7 +53,7 @@ class Redis extends AbstractService {
 
         $this->connect();
 
-        if (($dbIndex = $this->configData->getDbIndex()) !== null){
+        if (($dbIndex = $this->dbIndex) !== null){
             $this->redis->select($dbIndex);
         }
 
@@ -56,14 +68,14 @@ class Redis extends AbstractService {
     {
         if (!$this->redis->isConnected()) {
             try {
-                if (!$this->redis->connect($this->configData->getHost(), $this->configData->getPort(), 2)) {
+                if (!$this->redis->connect($this->host, $this->port, 2)) {
                     throw new RedisConnectionException('Unable to connect to redis');
                 }
-            } catch (Exception $e) {
+            } catch (Exception) {
                 throw new RedisConnectionException('Unable to connect to redis');
             }
-            if ($this->configData->getPassword() !== null) {
-                $this->redis->auth($this->configData->getPassword());
+            if ($this->password !== null) {
+                $this->redis->auth($this->password);
             }
         }
     }
@@ -103,7 +115,7 @@ class Redis extends AbstractService {
      * @param int|string|array $key
      * @throws RedisConnectionException
      */
-    public function remove($key) : void
+    public function remove(int|string|array $key) : void
     {
         $this->getRedis()->del($key);
     }
@@ -117,4 +129,14 @@ class Redis extends AbstractService {
     {
         return $this->getRedis()->keys($keyPattern);
     }
+
+    /**
+     *
+     */
+    public function initialise(): void {}
+
+    /**
+     * §
+     */
+    public function destroy(): void {}
 }
