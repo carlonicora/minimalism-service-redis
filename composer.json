@@ -1,7 +1,7 @@
 {
   "name": "carlonicora/minimalism-service-redis",
   "description": "Redis service for minimalism",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "homepage": "https://carlonicora.com",
   "time": "2019-05-14",
   "license": "MIT",
@@ -25,12 +25,9 @@
       "CarloNicora\\Minimalism\\Services\\Redis\\Tests\\":"tests/"
     }
   },
-  "require-dev": {
-    "phpunit/phpunit": "^9"
-  },
   "require": {
-    "php": "^7.4",
+    "php": ">=8",
     "ext-redis": "*",
-    "carlonicora/minimalism": "~11.0"
+    "carlonicora/minimalism": "~12.0"
   }
 }
