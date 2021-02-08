@@ -4,7 +4,6 @@ namespace CarloNicora\Minimalism\Services\Redis;
 use CarloNicora\Minimalism\Interfaces\ServiceInterface;
 use CarloNicora\Minimalism\Services\Redis\Exceptions\RedisConnectionException;
 use CarloNicora\Minimalism\Services\Redis\Exceptions\RedisKeyNotFoundException;
-use Exception;
 
 class Redis implements ServiceInterface
 {
@@ -53,10 +52,6 @@ class Redis implements ServiceInterface
 
         $this->connect();
 
-        if (($dbIndex = $this->dbIndex) !== null){
-            $this->redis->select($dbIndex);
-        }
-
         return $this->redis;
     }
 
@@ -67,15 +62,20 @@ class Redis implements ServiceInterface
     private function connect(): void
     {
         if (!$this->redis->isConnected()) {
-            try {
-                if (!$this->redis->connect($this->host, $this->port, 2)) {
-                    throw new RedisConnectionException('Unable to connect to redis');
-                }
-            } catch (Exception) {
-                throw new RedisConnectionException('Unable to connect to redis');
+            if (!$this->redis->pconnect(
+                host: $this->host,
+                port: $this->port,
+                timeout: 50
+            )) {
+                throw new RedisConnectionException('Unable to connect to redis', 500);
             }
+
             if ($this->password !== null) {
                 $this->redis->auth($this->password);
+            }
+
+            if ($this->dbIndex !== null){
+                $this->redis->select($this->dbIndex);
             }
         }
     }
