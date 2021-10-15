@@ -1,12 +1,12 @@
 {
   "name": "carlonicora/minimalism-service-redis",
   "description": "Redis service for minimalism",
-  "version": "3.0.1-beta1",
+  "version": "3.0.1-beta2",
   "homepage": "https://carlonicora.com",
   "time": "2019-05-14",
   "license": "MIT",
   "type": "library",
-  "minimum-stability": "stable",
+  "minimum-stability": "beta",
   "authors": [
     {
       "name": "Carlo Nicora",
