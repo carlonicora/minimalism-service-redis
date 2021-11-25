@@ -1,11 +1,11 @@
 <?php
 namespace CarloNicora\Minimalism\Services\Redis;
 
-use CarloNicora\Minimalism\Interfaces\ServiceInterface;
+use CarloNicora\Minimalism\Abstracts\AbstractService;
 use CarloNicora\Minimalism\Services\Redis\Exceptions\RedisConnectionException;
 use CarloNicora\Minimalism\Services\Redis\Exceptions\RedisKeyNotFoundException;
 
-class Redis implements ServiceInterface
+class Redis extends AbstractService
 {
     /** @var string  */
     private string $host;
@@ -13,8 +13,8 @@ class Redis implements ServiceInterface
     /** @var int  */
     private int $port;
 
-    /** @var string  */
-    private string $password;
+    /** @var string|null  */
+    private ?string $password;
 
     /** @var int|null  */
     private ?int $dbIndex;
@@ -28,6 +28,8 @@ class Redis implements ServiceInterface
      */
     public function __construct(string $MINIMALISM_SERVICE_REDIS_CONNECTION)
     {
+        parent::__construct();
+
         [
             $this->host,
             $this->port,
@@ -129,14 +131,4 @@ class Redis implements ServiceInterface
     {
         return $this->getRedis()->keys($keyPattern);
     }
-
-    /**
-     *
-     */
-    public function initialise(): void {}
-
-    /**
-     * §
-     */
-    public function destroy(): void {}
 }
