@@ -72,7 +72,7 @@ class Redis extends AbstractService
                 throw new RedisConnectionException('Unable to connect to redis', 500);
             }
 
-            if ($this->password !== null) {
+            if ($this->password !== null && $this->password !== '') {
                 $this->redis->auth($this->password);
             }
 
