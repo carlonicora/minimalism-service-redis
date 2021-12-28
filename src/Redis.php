@@ -76,9 +76,7 @@ class Redis extends AbstractService
                 $this->redis->auth($this->password);
             }
 
-            if ($this->dbIndex !== null){
-                $this->redis->select($this->dbIndex);
-            }
+            $this->redis->select($this->dbIndex??0);
         }
     }
 
