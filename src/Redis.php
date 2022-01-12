@@ -28,8 +28,6 @@ class Redis extends AbstractService
      */
     public function __construct(string $MINIMALISM_SERVICE_REDIS_CONNECTION)
     {
-        parent::__construct();
-
         [
             $this->host,
             $this->port,
