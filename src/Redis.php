@@ -127,4 +127,13 @@ class Redis extends AbstractService
     {
         return $this->getRedis()->keys($keyPattern);
     }
+
+    /**
+     * @return string|null
+     */
+    public static function getBaseInterface(
+    ): ?string
+    {
+        return null;
+    }
 }
